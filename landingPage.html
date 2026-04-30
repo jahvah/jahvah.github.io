@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Horizon | Beyond the Unknown</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        /* The Background */
+        .hero-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('blackhole.jpg') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+            filter: brightness(0.7);
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 10%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+        }
+
+        .logo {
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ff4d00; /* Matching the orange glow */
+        }
+
+        /* Main Content */
+        main {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 300;
+            letter-spacing: -2px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        p {
+            max-width: 600px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 2.5rem;
+        }
+
+        /* Call to Action */
+        .cta-button {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:hover {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+            box-shadow: 0 0 30px rgba(255, 77, 0, 0.4);
+        }
+
+        /* Decorative Elements */
+        .bottom-bar {
+            position: absolute;
+            bottom: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 2.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero-bg"></div>
+
+    <nav>
+        <div class="logo">Singularity</div>
+        <ul class="nav-links">
+            <li><a href="#">Cosmos</a></li>
+            <li><a href="#">The Physics</a></li>
+            <li><a href="#">Expedition</a></li>
+        </ul>
+    </nav>
+
+    <main class="fade-in">
+        <h1>Gravity Defined</h1>
+        <p>Journey to the edge of the observable universe where time stands still and physics as we know it ceases to exist.</p>
+        <button class="cta-button">Begin Descent</button>
+    </main>
+
+    <div class="bottom-bar">
+        <span>Coordinate: 0.00.12</span>
+        <span>Temp: -270.45°C</span>
+        <span>Mass: 4.3 Million Suns</span>
+    </div>
+
+</body>
+</html>
