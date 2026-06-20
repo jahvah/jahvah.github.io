@@ -26,7 +26,6 @@
             font-family: 'Inter', sans-serif;
             background-color: #050505;
             color: #fff;
-            /* Changed to allow scrolling */
             overflow-x: hidden; 
         }
 
@@ -142,9 +141,12 @@
         .profile-img {
             width: 100%;
             aspect-ratio: 1;
-            background: #111;
             border: 1px solid var(--accent);
             position: relative;
+            background-image: url('sources/profileImage.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .about-text p {
@@ -218,85 +220,73 @@
             animation: fadeIn 3s cubic-bezier(0.2, 0, 0.2, 1) forwards;
         }
 
-        .profile-img {
-    width: 100%;
-    aspect-ratio: 1;
-    border: 1px solid var(--accent);
-    position: relative;
+        /* New styles for the Rotoscoping Content */
+        .expedition-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 2rem;
+            max-width: 1000px;
+            text-align: left;
+        }
 
-    background-image: url('sources/profileImage.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
+        .data-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.01), rgba(255, 77, 0, 0.02));
+            border: 1px solid var(--border);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
 
-/* New styles for the Rotoscoping Content */
-.expedition-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    margin-top: 2rem;
-    max-width: 1000px;
-    text-align: left;
-}
+        .data-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
 
-.data-card {
-    background: linear-gradient(145deg, rgba(255,255,255,0.01), rgba(255, 77, 0, 0.02));
-    border: 1px solid var(--border);
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
-}
+        .tech-label {
+            font-size: 0.6rem;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 10px;
+        }
 
-.data-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--accent);
-    box-shadow: 0 0 10px var(--accent);
-}
+        .expedition-grid h3 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+        }
 
-.tech-label {
-    font-size: 0.6rem;
-    color: var(--accent);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 10px;
-}
+        .expedition-grid p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.7);
+        }
 
-.expedition-grid h3 {
-    font-family: 'Syncopate', sans-serif;
-    font-size: 1.2rem;
-    letter-spacing: 4px;
-    margin-bottom: 1rem;
-}
+        .process-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
 
-.expedition-grid p {
-    font-size: 0.9rem;
-    line-height: 1.6;
-    color: rgba(255,255,255,0.7);
-}
+        .process-list li {
+            font-size: 0.8rem;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+        }
 
-.process-list {
-    list-style: none;
-    margin-top: 1rem;
-}
-
-.process-list li {
-    font-size: 0.8rem;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    justify-content: space-between;
-}
-
-.process-list li span {
-    color: var(--accent);
-}
+        .process-list li span {
+            color: var(--accent);
+        }
 
         @keyframes fadeIn {
             from { opacity: 0; letter-spacing: 30px; filter: blur(10px); }
@@ -316,11 +306,10 @@
             margin-top: 1rem;
         }
 
-        /* Ensure the button looks consistent as a link */
         .cta-button {
             display: inline-block;
             text-decoration: none;
-            min-width: 220px; /* Gives buttons uniform width */
+            min-width: 220px;
         }
         
     </style>
@@ -377,43 +366,44 @@
         </div>
     </section>
 
-<!-- Updated Expedition Section -->
-<section id="expedition">
-    <h2 class="section-title">The Expedition</h2>
-    
-    <div class="expedition-grid">
-        <!-- Technical Definition -->
-        <div class="data-card">
-            <span class="tech-label">Process: Extraction</span>
-            <h3>Rotoscoping</h3>
-            <p>
-                In the realm of multimedia, Rotoscoping is the surgical technique of tracing over footage, frame by frame, to produce realistic action. It creates a "matte" that allows us to extract subjects from their original environment—essential for deep-space compositing.
-            </p>
-            <ul class="process-list">
-                <li>Frame Interpolation <span>Active</span></li>
-                <li>Bezier Pathing <span>Precision</span></li>
-                <li>Alpha Channel <span>Isolated</span></li>
-            </ul>
-        </div>
+    <!-- Updated Expedition Section -->
+    <section id="expedition">
+        <h2 class="section-title">The Expedition</h2>
+        
+        <div class="expedition-grid">
+            <!-- Technical Definition -->
+            <div class="data-card">
+                <span class="tech-label">Process: Extraction</span>
+                <h3>Rotoscoping</h3>
+                <p>
+                    In the realm of multimedia, Rotoscoping is the surgical technique of tracing over footage, frame by frame, to produce realistic action. It creates a "matte" that allows us to extract subjects from their original environment—essential for deep-space compositing.
+                </p>
+                <ul class="process-list">
+                    <li>Frame Interpolation <span>Active</span></li>
+                    <li>Bezier Pathing <span>Precision</span></li>
+                    <li>Alpha Channel <span>Isolated</span></li>
+                </ul>
+            </div>
 
-        <!-- Application -->
-        <div class="data-card">
-            <span class="tech-label">Mission: Application</span>
-            <h3>Visual Effects</h3>
-            <p>
-                Whether it is removing unwanted artifacts from a scene or creating glowing sabers of light, rotoscoping is the bridge between the captured reality and the digital unknown. It requires patience, steady hands, and an eye for organic movement.
-            </p>
-            <div style="margin-top: 15px; border: 1px dashed var(--accent); padding: 10px; font-size: 0.7rem; color: var(--accent);">
-                STATUS: MANUAL OVERRIDE REQUIRED FOR FRAME 001-240
+            <!-- Application -->
+            <div class="data-card">
+                <span class="tech-label">Mission: Application</span>
+                <h3>Visual Effects</h3>
+                <p>
+                    Whether it is removing unwanted artifacts from a scene or creating glowing sabers of light, rotoscoping is the bridge between the captured reality and the digital unknown. It requires patience, steady hands, and an eye for organic movement.
+                </p>
+                <div style="margin-top: 15px; border: 1px dashed var(--accent); padding: 10px; font-size: 0.7rem; color: var(--accent);">
+                    STATUS: MANUAL OVERRIDE REQUIRED FOR FRAME 001-240
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
+    <!-- Dynamic Telemetry Tracking Local Base Data -->
     <div class="bottom-bar">
-        <span><strong>CRD:</strong> 0.00.12</span>
-        <span><strong>TMP:</strong> -270.45°C</span>
-        <span><strong>MSS:</strong> 4.3M SUNS</span>
+        <span><strong>CRD:</strong> 14°31′N, 121°03′E</span>
+        <span><strong>TMP:</strong> 33°C (FEELS 41°C)</span>
+        <span><strong>LOC:</strong> TAGUIG_PH</span>
     </div>
 
 </body>

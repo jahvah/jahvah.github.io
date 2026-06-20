@@ -97,31 +97,85 @@
             color: var(--accent);
             letter-spacing: 4px;
             font-size: 0.8rem;
-            margin-bottom: 4rem;
+            margin-bottom: 2rem;
             text-transform: uppercase;
         }
 
-        /* Video Grid */
-    .video-container {
-    display: grid;
-    /* Changed minmax from 300px to 220px to allow smaller sizing */
-    grid-template-columns: repeat(auto-fit, minmax(220px, 300px)); 
-    gap: 40px;
-    width: 100%;
-    max-width: 1100px;
-    justify-content: center; /* Keeps the grid centered */
-}
+        /* Calculator Station Styling */
+        .calculator-panel {
+            background: rgba(10, 10, 10, 0.6);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            padding: 20px 40px;
+            border-radius: 4px;
+            margin-bottom: 4rem;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+        }
 
-    .video-card {
-    background: var(--glass);
-    border: 1px solid var(--border);
-    padding: 15px; /* Slightly reduced padding */
-    backdrop-filter: blur(10px);
-    position: relative;
-    transition: transform 0.4s ease;
-    max-width: 280px; /* Adjust this value to set your preferred size */
-    margin: 0 auto; /* Centers cards if they wrap */
-}
+        .calculator-panel::before {
+            content: "CALCULATION_ENGINE";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #050505;
+            padding: 0 10px;
+            font-size: 0.6rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+        }
+
+        .calculator-panel label {
+            display: block;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .calculator-panel input {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 10px 15px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            text-align: center;
+            width: 100%;
+            max-width: 200px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .calculator-panel input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(255, 77, 0, 0.2);
+        }
+
+        /* Video Grid */
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 300px)); 
+            gap: 40px;
+            width: 100%;
+            max-width: 1100px;
+            justify-content: center; 
+        }
+
+        .video-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 15px; 
+            backdrop-filter: blur(10px);
+            position: relative;
+            transition: transform 0.4s ease;
+            max-width: 280px; 
+            margin: 0 auto; 
+        }
+
         .video-card:hover {
             transform: translateY(-10px);
             border-color: var(--accent);
@@ -142,7 +196,6 @@
         .iframe-wrapper {
             position: relative;
             width: 100%;
-            /* Aspect ratio for Shorts/Portrait (9:16) */
             aspect-ratio: 9 / 16; 
             overflow: hidden;
             background: #000;
@@ -173,6 +226,36 @@
             font-size: 0.8rem;
             color: rgba(255,255,255,0.6);
             line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Telemetry Dynamic readout data layout */
+        .telemetry-metrics {
+            border-top: 1px dashed rgba(255,255,255,0.15);
+            padding-top: 12px;
+            font-size: 0.72rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .metric-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .metric-label {
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-val {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .metric-val.highlight {
+            color: var(--accent);
         }
 
         .bottom-bar {
@@ -190,6 +273,7 @@
             background: rgba(0,0,0,0.8);
             backdrop-filter: blur(5px);
             border-top: 1px solid var(--border);
+            z-index: 100;
         }
 
         @media (max-width: 768px) {
@@ -212,8 +296,15 @@
         <h1 class="section-title">Solar System</h1>
         <p class="subtitle">Deep Space Observation // Archives</p>
 
+        <!-- Dynamic Calculator Input Control Station -->
+        <div class="calculator-panel">
+            <label for="earthAgeInput">Enter Target Earth Age</label>
+            <input type="number" id="earthAgeInput" min="0" value="25" placeholder="e.g. 25">
+        </div>
+
         <div class="video-container">
             <!-- Video 01 - The Sun -->
+            <!-- Note: Sun does not orbit itself in a planetary fashion, displaying cosmic metrics -->
             <div class="video-card">
                 <div class="iframe-wrapper">
                     <iframe 
@@ -225,11 +316,17 @@
                 </div>
                 <div class="video-info">
                     <h3>Sun</h3>    
-                    <p>The Sun is the center of our solar system. It gives light and heat, making life on Earth possible.</p>                </div>
+                    <p>The Sun is the center of our solar system. It gives light and heat, making life on Earth possible.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val">—</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val">N/A</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">0 EY</span></div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Video 02 - Planets -->
-            <div class="video-card">
+            <!-- Video 02 - Saturn -->
+            <div class="video-card" data-period="29.45">
                 <div class="iframe-wrapper">
                     <iframe 
                         src="https://www.youtube-nocookie.com/embed/wCkkKWY6E2s" 
@@ -241,11 +338,17 @@
                 <div class="video-info">
                     <h3>Saturn</h3>
                     <p>Saturn is a gas giant known for its beautiful rings. It is one of the largest planets in the solar system.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">29.45 EY</span></div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Video 03 - Exploration -->
-            <div class="video-card">
+            <!-- Video 03 - Moon -->
+            <!-- Moon orbits Earth (~0.0748 Earth Years / 27.3 days) -->
+            <div class="video-card" data-period="0.0748">
                 <div class="iframe-wrapper">
                     <iframe 
                         src="https://www.youtube-nocookie.com/embed/DqJg44-qxYQ" 
@@ -257,11 +360,16 @@
                 <div class="video-info">
                     <h3>Moon</h3>
                     <p>The Moon is Earth's only natural satellite. It affects ocean tides and lights up the night sky.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">0.075 EY</span></div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Video 04 - Mechanics -->
-            <div class="video-card">
+            <!-- Video 04 - Earth -->
+            <div class="video-card" data-period="1.0">
                 <div class="iframe-wrapper">
                     <iframe 
                         src="https://www.youtube-nocookie.com/embed/kRJkBuDXPh4" 
@@ -272,8 +380,99 @@
                 </div>
                 <div class="video-info">
                     <h3>Earth</h3>
-                    <p>Earth is our home planet. It is the only known planet that supports life with water, air, and land.</p>                </div>
+                    <p>Earth is our home planet. It is the only known planet that supports life with water, air, and land.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">1.00 EY</span></div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Video 05 - Mars -->
+            <div class="video-card" data-period="1.88">
+                <div class="iframe-wrapper">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/B5Bkg0GYNFI" 
+                        title="Mars" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3>Mars</h3>
+                    <p>Mars is a cold, desert world covered in iron oxide dust, giving it its iconic rusty-red appearance.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">1.88 EY</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video 06 - Neptune -->
+            <div class="video-card" data-period="164.8">
+                <div class="iframe-wrapper">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/kE0dlWZU274" 
+                        title="Neptune" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3>Neptune</h3>
+                    <p>Neptune is a dark, cold ice giant whipped by supersonic winds, orbiting at the remote edge of our planetary system.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">164.80 EY</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video 07 - Uranus -->
+            <div class="video-card" data-period="84.01">
+                <div class="iframe-wrapper">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/M9d1kJp8C9g" 
+                        title="Uranus" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3>Uranus</h3>
+                    <p>Uranus is an ice giant uniquely tilted completely on its side, rotating almost at a right angle to its orbit.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">84.01 EY</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video 08 - Venus -->
+            <div class="video-card" data-period="0.615">
+                <div class="iframe-wrapper">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/b42L7sK8BKU" 
+                        title="Venus" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3>Venus</h3>
+                    <p>Venus is a scorching, rocky world trapped in a runaway greenhouse effect, making it the hottest planet in our solar system.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">0.615 EY</span></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -282,5 +481,40 @@
         <span><strong>CODE:</strong> SPACE_DEPT_09</span>
     </div>
 
+    <!-- JavaScript Data Logic Processing Block -->
+    <script>
+        const ageInput = document.getElementById('earthAgeInput');
+        const cards = document.querySelectorAll('.video-card[data-period]');
+
+        function calculateTelemetry() {
+            let earthYears = parseFloat(ageInput.value);
+            
+            // Validation handling for empty or negative inputs
+            if (isNaN(earthYears) || earthYears < 0) {
+                earthYears = 0;
+            }
+
+            cards.forEach(card => {
+                const orbitalPeriod = parseFloat(card.getAttribute('data-period'));
+                
+                // Calculate dynamic metrics
+                const targetAge = earthYears / orbitalPeriod;
+                const totalRevolutions = earthYears / orbitalPeriod;
+
+                // Update DOM text nodes dynamically with precise formatting
+                const ageElement = card.querySelector('.class-age');
+                const revElement = card.querySelector('.class-rev');
+
+                if (ageElement) ageElement.textContent = targetAge.toFixed(2);
+                if (revElement) revElement.textContent = totalRevolutions.toFixed(2);
+            });
+        }
+
+        // Event listeners handling setup for real-time calculation execution
+        ageInput.addEventListener('input', calculateTelemetry);
+        
+        // Initial engine trigger on window paint completion
+        window.addEventListener('DOMContentLoaded', calculateTelemetry);
+    </script>
 </body>
 </html>
