@@ -78,7 +78,7 @@
         }
 
         section {
-            padding: 150px 10% 100px;
+            padding: 150px 10% 120px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -101,27 +101,36 @@
             text-transform: uppercase;
         }
 
-        /* Video Grid */
-    .video-container {
-    display: grid;
-    /* Changed minmax from 300px to 220px to allow smaller sizing */
-    grid-template-columns: repeat(auto-fit, minmax(220px, 300px)); 
-    gap: 40px;
-    width: 100%;
-    max-width: 1100px;
-    justify-content: center; /* Keeps the grid centered */
-}
+        /* Container wrapping everything */
+        .content-wrapper {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            flex-direction: column;
+            gap: 60px; /* Space between reference, grid, and standalone final feature */
+        }
 
-    .video-card {
-    background: var(--glass);
-    border: 1px solid var(--border);
-    padding: 15px; /* Slightly reduced padding */
-    backdrop-filter: blur(10px);
-    position: relative;
-    transition: transform 0.4s ease;
-    max-width: 280px; /* Adjust this value to set your preferred size */
-    margin: 0 auto; /* Centers cards if they wrap */
-}
+        /* Video Grid for Weeks 1-8 */
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+            gap: 40px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .video-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            transition: transform 0.4s ease, border-color 0.4s ease;
+            width: 100%;
+            max-width: 280px; 
+            margin: 0 auto;
+        }
+        
         .video-card:hover {
             transform: translateY(-10px);
             border-color: var(--accent);
@@ -139,10 +148,38 @@
             letter-spacing: 2px;
         }
 
+        /* Reference Feature Modification */
+        .video-card.reference-feature {
+            max-width: 420px;
+            border-color: rgba(255, 255, 255, 0.3); 
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+            margin: 0 auto;
+        }
+
+        .video-card.reference-feature::before {
+            content: "REFERENCE_STREAM";
+            color: #fff;
+        }
+
+        .video-card.reference-feature .video-info h3 {
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        /* Specific modifications to make the Final Output look big and isolated */
+        .video-card.final-feature {
+            max-width: 420px; /* Noticeably wider and larger formatting */
+            border-color: rgba(255, 77, 0, 0.4); /* Subtle orange tint natively */
+            box-shadow: 0 0 30px rgba(255, 77, 0, 0.05);
+        }
+
+        .video-card.final-feature::before {
+            content: "FINAL_OUTPUT_STREAM";
+        }
+
         .iframe-wrapper {
             position: relative;
             width: 100%;
-            /* Aspect ratio for Shorts/Portrait (9:16) */
             aspect-ratio: 9 / 16; 
             overflow: hidden;
             background: #000;
@@ -169,6 +206,11 @@
             margin-bottom: 10px;
         }
 
+        .video-card.final-feature .video-info h3 {
+            font-size: 1.2rem; /* Louder text header for final feature */
+            color: var(--accent);
+        }
+
         .video-info p {
             font-size: 0.8rem;
             color: rgba(255,255,255,0.6);
@@ -190,11 +232,15 @@
             background: rgba(0,0,0,0.8);
             backdrop-filter: blur(5px);
             border-top: 1px solid var(--border);
+            z-index: 100;
         }
 
         @media (max-width: 768px) {
             .video-container {
                 grid-template-columns: 1fr;
+            }
+            .video-card.final-feature, .video-card.reference-feature {
+                max-width: 280px; /* Scale back gracefully on mobile phones */
             }
         }
     </style>
@@ -212,38 +258,163 @@
         <h1 class="section-title">Extraction Logs</h1>
         <p class="subtitle">Manual Frame Manipulation // Portfolio</p>
 
-        <div class="video-container">
-            <!-- Video 01 -->
-            <div class="video-card">
+        <div class="content-wrapper">
+
+            <!-- Reference Stream (Added at the top) -->
+            <div class="video-card reference-feature">
                 <div class="iframe-wrapper">
                     <iframe 
-                        src="https://www.youtube-nocookie.com/embed/nqJraaiPxsA" 
-                        title="Rotoscope Work 01" 
+                        src="https://www.youtube.com/embed/vvMSLlx-bTM?rel" 
+                        title="Reference Video" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen>
                     </iframe>
                 </div>
                 <div class="video-info">
-                    <h3>Week 1</h3>
-                    <p>I extracted the frames and manually traced each one.</p>
+                    <h3>Reference Video</h3>
+                    <p><em>Note: This video is not stolen. It was used purely as a visual reference to guide the original rotoscoping work found below.</em></p>
                 </div>
             </div>
 
-            <!-- Video 02 -->
-            <div class="video-card">
+            <!-- Main Work Grid -->
+            <div class="video-container">
+                <div class="video-card">
+                    <div class="iframe-wrapper">
+                        <iframe 
+                            src="https://www.youtube-nocookie.com/embed/nqJraaiPxsA" 
+                            title="Rotoscope Work 01" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3>Week 1</h3>
+                        <p>I extracted the frames and manually traced each one.</p>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="iframe-wrapper">
+                        <iframe 
+                            src="https://www.youtube-nocookie.com/embed/Q7pe6lhf3ZY" 
+                            title="Rotoscope Work 02" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3>Week 2</h3>
+                        <p>I extracted the frames and manually traced each one.</p>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="iframe-wrapper">
+                        <iframe 
+                            src="https://www.youtube-nocookie.com/embed/VW-JrLRv2Gc" 
+                            title="Rotoscope Work 03" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3>Week 3</h3>
+                        <p>I extracted the frames and manually traced each one.</p>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="iframe-wrapper">
+                        <iframe 
+                            src="https://www.youtube-nocookie.com/embed/RZrRH6qv70w" 
+                            title="Rotoscope Work 04" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3>Week 4</h3>
+                        <p>I extracted the frames and manually traced each one.</p>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="iframe-wrapper">
+                        <iframe 
+                            src="https://www.youtube-nocookie.com/embed/Ioz_7LPj2Fg" 
+                            title="Rotoscope Work 05" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3>Week 5</h3>
+                        <p>I extracted the frames and manually traced each one.</p>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="iframe-wrapper">
+                        <iframe 
+                            src="https://www.youtube-nocookie.com/embed/AZaIBxWxNI8" 
+                            title="Rotoscope Work 06" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3>Week 6</h3>
+                        <p>I extracted the frames and manually traced each one.</p>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="iframe-wrapper">
+                        <iframe 
+                            src="https://www.youtube.com/embed/cjR7W2ZE334" 
+                            title="Rotoscope Work 07" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3>Week 7</h3>
+                        <p>I extracted the frames and manually traced each one.</p>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="iframe-wrapper">
+                        <iframe 
+                            src="https://www.youtube.com/embed/sv2CLrTGGsM"  
+                            title="Rotoscope Work 08" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3>Week 8</h3>
+                        <p>I extracted the frames and manually traced each one.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Feature Output -->
+            <div class="video-card final-feature">
                 <div class="iframe-wrapper">
                     <iframe 
-                        src="https://www.youtube-nocookie.com/embed/Q7pe6lhf3ZY" 
-                        title="Rotoscope Work 02" 
+                        src="https://www.youtube.com/embed/Yitsz8mJUCo"  
+                        title="Rotoscope Work Final Output" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen>
                     </iframe>
                 </div>
                 <div class="video-info">
-                    <h3>Week 2</h3>
-                    <p>I extracted the frames and manually traced each one.</p>
+                    <h3>Final Output</h3>
+                    <p>The compilation of the manual rotoscoping stream extraction process.</p>
                 </div>
             </div>
+            
         </div>
     </section>
 

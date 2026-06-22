@@ -296,15 +296,12 @@
         <h1 class="section-title">Solar System</h1>
         <p class="subtitle">Deep Space Observation // Archives</p>
 
-        <!-- Dynamic Calculator Input Control Station -->
         <div class="calculator-panel">
             <label for="earthAgeInput">Enter Target Earth Age</label>
             <input type="number" id="earthAgeInput" min="0" value="25" placeholder="e.g. 25">
         </div>
 
         <div class="video-container">
-            <!-- Video 01 - The Sun -->
-            <!-- Note: Sun does not orbit itself in a planetary fashion, displaying cosmic metrics -->
             <div class="video-card">
                 <div class="iframe-wrapper">
                     <iframe 
@@ -325,7 +322,6 @@
                 </div>
             </div>
 
-            <!-- Video 02 - Saturn -->
             <div class="video-card" data-period="29.45">
                 <div class="iframe-wrapper">
                     <iframe 
@@ -346,8 +342,6 @@
                 </div>
             </div>
 
-            <!-- Video 03 - Moon -->
-            <!-- Moon orbits Earth (~0.0748 Earth Years / 27.3 days) -->
             <div class="video-card" data-period="0.0748">
                 <div class="iframe-wrapper">
                     <iframe 
@@ -368,7 +362,6 @@
                 </div>
             </div>
 
-            <!-- Video 04 - Earth -->
             <div class="video-card" data-period="1.0">
                 <div class="iframe-wrapper">
                     <iframe 
@@ -389,7 +382,6 @@
                 </div>
             </div>
 
-            <!-- Video 05 - Mars -->
             <div class="video-card" data-period="1.88">
                 <div class="iframe-wrapper">
                     <iframe 
@@ -410,7 +402,6 @@
                 </div>
             </div>
 
-            <!-- Video 06 - Neptune -->
             <div class="video-card" data-period="164.8">
                 <div class="iframe-wrapper">
                     <iframe 
@@ -431,7 +422,6 @@
                 </div>
             </div>
 
-            <!-- Video 07 - Uranus -->
             <div class="video-card" data-period="84.01">
                 <div class="iframe-wrapper">
                     <iframe 
@@ -452,7 +442,6 @@
                 </div>
             </div>
 
-            <!-- Video 08 - Venus -->
             <div class="video-card" data-period="0.615">
                 <div class="iframe-wrapper">
                     <iframe 
@@ -473,6 +462,26 @@
                 </div>
             </div>
 
+            <div class="video-card" data-period="248.0">
+                <div class="iframe-wrapper">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/6g18cw6r5Qo" 
+                        title="Pluto" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3>Pluto</h3>
+                    <p>Pluto is a complex dwarf planet located in the Kuiper Belt, known for its icy mountains and a large, heart-shaped glacier.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">248.00 EY</span></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -481,7 +490,6 @@
         <span><strong>CODE:</strong> SPACE_DEPT_09</span>
     </div>
 
-    <!-- JavaScript Data Logic Processing Block -->
     <script>
         const ageInput = document.getElementById('earthAgeInput');
         const cards = document.querySelectorAll('.video-card[data-period]');
