@@ -78,7 +78,7 @@
         }
 
         section {
-            padding: 150px 10% 100px;
+            padding: 150px 10% 120px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -163,6 +163,7 @@
             width: 100%;
             max-width: 1100px;
             justify-content: center; 
+            margin-bottom: 50px;
         }
 
         .video-card {
@@ -258,6 +259,51 @@
             color: var(--accent);
         }
 
+        /* Full-Width Landscape Video Component */
+        .landscape-video-container {
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 20px;
+        }
+
+        .landscape-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            display: grid;
+            grid-template-columns: 1.618fr 1fr;
+            gap: 30px;
+            align-items: center;
+            transition: border-color 0.4s ease;
+        }
+
+        .landscape-card:hover {
+            border-color: var(--accent);
+        }
+
+        .landscape-card::before {
+            content: "FINAL_OUTPUT_FEED";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #050505;
+            padding: 0 10px;
+            font-size: 0.6rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+        }
+
+        .landscape-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
         .bottom-bar {
             position: fixed;
             bottom: 0;
@@ -279,6 +325,10 @@
         @media (max-width: 768px) {
             .video-container {
                 grid-template-columns: 1fr;
+            }
+            .landscape-card {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
         }
     </style>
@@ -481,7 +531,27 @@
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div class="landscape-video-container">
+            <div class="landscape-card">
+                <div class="landscape-wrapper">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/9yHd9_GKw2E" 
+                        title="Solar System Overview" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3>Cosmic Summary</h3>
+                    <p>Comprehensive telemetry map overview analyzing interplanetary alignments, gravitational architecture, and deep space mechanics within the local cluster.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Feed Status:</span> <span class="metric-val highlight">LIVE</span></div>
+                        <div class="metric-line"><span class="metric-label">System Integrity:</span> <span class="metric-val">100%</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
