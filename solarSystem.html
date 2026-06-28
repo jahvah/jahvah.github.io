@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Celestial Mapping | Solar System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --accent: #ff4d00;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
+            --accent: #00FF66;
+            --accent-cyan: #00F0FF;
+            --accent-dim: rgba(0, 255, 102, 0.25);
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         * {
@@ -20,30 +22,66 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #050505;
+            background-color: #020503;
             color: #fff;
             overflow-x: hidden;
             min-height: 100vh;
+            position: relative;
         }
 
-        /* Fixed Background to match main page */
+        /* --- Dynamic Cosmic Background Layer --- */
         .hero-bg {
             position: fixed;
             inset: 0;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), 
-                        url('sources/landingpage.jpg') no-repeat center center;
-            background-size: cover;
+            background: radial-gradient(circle at 50% 50%, #04120a 0%, #010402 90%);
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .hero-bg::before,
+        .hero-bg::after {
+            content: "";
+            position: absolute;
+            inset: -100px;
+            background-repeat: repeat;
+            opacity: 0.4;
+            mix-blend-mode: screen;
+        }
+
+        .hero-bg::before {
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 80px 120px, rgba(0, 255, 102, 0.5), rgba(0,0,0,0));
+            background-size: 250px 250px;
+            animation: cosmicDrift 120s linear infinite;
+        }
+
+        /* --- Vector Solar System Canvas Overlay --- */
+        #solarCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             z-index: -1;
-            filter: grayscale(0.5) brightness(0.3);
+            pointer-events: none;
+            opacity: 0.85;
+        }
+
+        @keyframes cosmicDrift {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(40px, 40px) rotate(360deg); }
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 10%;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
+            padding: 1.5rem 8%;
+            background: rgba(2, 5, 3, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             position: fixed;
             width: 100%;
@@ -54,18 +92,55 @@
         .logo {
             font-family: 'Syncopate', sans-serif;
             font-weight: 700;
-            letter-spacing: 6px;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            font-size: 1rem;
-            background: linear-gradient(to right, #fff, var(--accent));
+            font-size: 0.9rem;
+            line-height: 1.4;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+        }
+
+        .logo::before {
+            content: "MULTIMEDIA // AUTORING";
+            background: linear-gradient(to right, #ffffff, var(--accent) 70%, var(--accent-cyan));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: authBlink 2s steps(2, start) infinite;
+        }
+
+        .logo::after {
+            content: "Elijah Neil S. Gallardo";
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            opacity: 0.6;
+        }
+
+        @keyframes authBlink {
+            0%, 100% { border-right: 2px solid transparent; }
+            50% { border-right: 2px solid var(--accent); }
+        }
+
+        a.logo {
+            text-decoration: none;
+            outline: none;
+            border: none;
+            color: inherit;
+        }
+
+        a.logo:link, a.logo:visited, a.logo:hover, a.logo:active, a.logo:focus {
+            text-decoration: none;
+            outline: none;
         }
 
         .back-link {
             text-decoration: none;
             color: var(--accent);
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -78,34 +153,201 @@
         }
 
         section {
-            padding: 150px 10% 120px;
+            padding: 140px 8% 120px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
         }
 
-        .section-title {
+        .cinematic-intro {
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 4rem;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            background: linear-gradient(135deg, rgba(2,5,3,0.85) 0%, rgba(0,255,102,0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 50px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            overflow: hidden;
+        }
+
+        .cinematic-intro::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(0, 255, 102, 0.03) 1px, transparent 1px);
+            background-size: 100% 4px;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .intro-main-flow {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .sys-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 255, 102, 0.08);
+            border: 1px solid var(--accent-dim);
+            padding: 6px 14px;
+            border-radius: 3px;
+            width: fit-content;
+            margin-bottom: 1.8rem;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent);
+            animation: pulseGlow 2s infinite;
+        }
+
+        .status-text {
+            font-size: 0.65rem;
             font-family: 'Syncopate', sans-serif;
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
-            letter-spacing: 10px;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            text-align: center;
-        }
-
-        .subtitle {
+            letter-spacing: 3px;
             color: var(--accent);
-            letter-spacing: 4px;
-            font-size: 0.8rem;
-            margin-bottom: 2rem;
             text-transform: uppercase;
         }
 
-        /* Calculator Station Styling */
+        .cinematic-title {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 4.2rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            margin-bottom: 1.8rem;
+            background: linear-gradient(to bottom, #ffffff 60%, rgba(255,255,255,0.4) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cinematic-title span {
+            color: var(--accent);
+            -webkit-text-fill-color: initial;
+            text-shadow: 0 0 20px rgba(0, 255, 102, 0.3);
+        }
+
+        .cinematic-desc {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            max-width: 720px;
+            font-weight: 300;
+            border-left: 2px solid var(--accent-dim);
+            padding-left: 20px;
+        }
+
+        .intro-side-telemetry {
+            border-left: 1px dashed rgba(255,255,255,0.12);
+            padding-left: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .telemetry-block h4 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .vector-hud-display {
+            width: 100%;
+            height: 100px;
+            border: 1px dashed rgba(255,255,255,0.1);
+            position: relative;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vector-hud-display::before {
+            content: "";
+            position: absolute;
+            width: 70%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: scanHorizontal 3s ease-in-out infinite;
+        }
+
+        .vector-circle {
+            width: 60px;
+            height: 60px;
+            border: 1px solid var(--accent-dim);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vector-circle-inner {
+            width: 30px;
+            height: 30px;
+            border: 1px dashed var(--accent);
+            border-radius: 50%;
+            animation: rotateClockwise 12s linear infinite;
+        }
+
+        .tech-specs-list {
+            list-style: none;
+            font-size: 0.72rem;
+            font-family: monospace;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .tech-specs-list li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .tech-specs-list span strong {
+            color: #fff;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        @keyframes scanHorizontal {
+            0% { top: 10%; }
+            50% { top: 90%; }
+            100% { top: 10%; }
+        }
+
+        @keyframes rotateClockwise {
+            to { transform: rotate(360deg); }
+        }
+
         .calculator-panel {
-            background: rgba(10, 10, 10, 0.6);
+            background: rgba(4, 8, 5, 0.85);
             border: 1px solid var(--border);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 20px 40px;
             border-radius: 4px;
             margin-bottom: 4rem;
@@ -116,11 +358,11 @@
         }
 
         .calculator-panel::before {
-            content: "CALCULATION_ENGINE";
+            content: "AutoCalculator_Engine";
             position: absolute;
             top: -10px;
             left: 20px;
-            background: #050505;
+            background: #020503;
             padding: 0 10px;
             font-size: 0.6rem;
             color: var(--accent);
@@ -152,33 +394,47 @@
 
         .calculator-panel input:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(255, 77, 0, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.2);
         }
 
-        /* Video Grid */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: transform, opacity;
+        }
+
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .video-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 300px)); 
-            gap: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
             width: 100%;
             max-width: 1100px;
-            justify-content: center; 
-            margin-bottom: 50px;
+            margin-bottom: 80px;
         }
 
         .video-card {
-            background: var(--glass);
+            background: rgba(4, 8, 5, 0.75);
             border: 1px solid var(--border);
-            padding: 15px; 
-            backdrop-filter: blur(10px);
+            padding: 30px; 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             position: relative;
-            transition: transform 0.4s ease;
-            max-width: 280px; 
-            margin: 0 auto; 
+            transition: transform 0.4s ease, border-color 0.4s ease;
+            max-width: 100%; 
+            display: grid;
+            grid-template-columns: 240px 1.2fr 1fr;
+            gap: 30px;
+            align-items: center;
         }
 
         .video-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             border-color: var(--accent);
         }
 
@@ -187,17 +443,104 @@
             position: absolute;
             top: -10px;
             left: 20px;
-            background: #050505;
+            background: #020503;
             padding: 0 10px;
             font-size: 0.6rem;
             color: var(--accent);
             letter-spacing: 2px;
         }
 
+        .planet-model-box {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .planet-index {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 2px;
+        }
+
+        .planet-sphere {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #e3d5ca 0%, #7f5539 70%, #000000 100%);
+            box-shadow: inset -10px -10px 30px rgba(0,0,0,0.9), 0 0 40px rgba(227, 213, 202, 0.15);
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .video-card[data-period="0.0748"] .planet-sphere {
+            background: radial-gradient(circle at 30% 30%, #d8cbc4 0%, #8a7e78 60%, #1a1513 100%);
+            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 35px rgba(255,255,255,0.1);
+        }
+        .video-card[data-period="0.615"] .planet-sphere {
+            background: radial-gradient(circle at 30% 30%, #fff2b2 0%, #ce9143 60%, #201000 100%);
+            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 40px rgba(206,145,67,0.2);
+        }
+        .video-card[data-period="1.0"] .planet-sphere {
+            background: radial-gradient(circle at 30% 30%, #64dfdf 0%, #226fbe 60%, #031424 100%);
+            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 40px rgba(100,223,223,0.2);
+        }
+        .video-card[data-period="1.88"] .planet-sphere {
+            background: radial-gradient(circle at 30% 30%, #ffaa44 0%, #9e2a2b 70%, #1a000c 100%);
+            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 45px rgba(255,170,68,0.15);
+        }
+        .video-card[data-period="11.86"] .planet-sphere {
+            background: radial-gradient(circle at 30% 30%, #e3d5ca 0%, #7f5539 70%, #000000 100%);
+            box-shadow: inset -10px -10px 30px rgba(0,0,0,0.9), 0 0 40px rgba(227, 213, 202, 0.15);
+        }
+        .video-card[data-period="29.45"] .planet-sphere {
+            background: radial-gradient(circle at 30% 30%, #ebd49a 0%, #a68a56 60%, #1c150c 100%);
+            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 40px rgba(235,212,154,0.15);
+        }
+        .video-card[data-period="29.45"] .planet-sphere::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 180px;
+            height: 14px;
+            background: rgba(235, 212, 154, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+        }
+        .video-card[data-period="84.01"] .planet-sphere {
+            background: radial-gradient(circle at 30% 30%, #b3e5fc 0%, #4fc3f7 60%, #01579b 100%);
+            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 35px rgba(79,195,247,0.2);
+        }
+        .video-card[data-period="164.8"] .planet-sphere {
+            background: radial-gradient(circle at 30% 30%, #4d7cff 0%, #1a3099 70%, #050a30 100%);
+            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 35px rgba(77,124,255,0.2);
+        }
+
+        .planet-tag {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
         .iframe-wrapper {
             position: relative;
             width: 100%;
-            aspect-ratio: 9 / 16; 
+            aspect-ratio: 16 / 9; 
             overflow: hidden;
             background: #000;
             border: 1px solid rgba(255,255,255,0.05);
@@ -213,29 +556,57 @@
         }
 
         .video-info {
-            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
         }
 
         .video-info h3 {
             font-family: 'Syncopate', sans-serif;
-            font-size: 0.9rem;
+            font-size: 1.3rem;
             letter-spacing: 2px;
             margin-bottom: 10px;
         }
 
         .video-info p {
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
             line-height: 1.6;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        /* Telemetry Dynamic readout data layout */
+        /* --- Cybernetic Download Button Styling --- */
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 8px 14px;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            width: fit-content;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            background: var(--accent);
+            color: #020503;
+            box-shadow: 0 0 15px var(--accent-dim);
+        }
+
         .telemetry-metrics {
             border-top: 1px dashed rgba(255,255,255,0.15);
             padding-top: 12px;
             font-size: 0.72rem;
-            font-family: 'Inter', sans-serif;
         }
 
         .metric-line {
@@ -259,7 +630,6 @@
             color: var(--accent);
         }
 
-        /* Full-Width Landscape Video Component */
         .landscape-video-container {
             width: 100%;
             max-width: 1100px;
@@ -267,20 +637,16 @@
         }
 
         .landscape-card {
-            background: var(--glass);
+            background: rgba(4, 8, 5, 0.75);
             border: 1px solid var(--border);
-            padding: 20px;
-            backdrop-filter: blur(10px);
+            padding: 30px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             position: relative;
             display: grid;
             grid-template-columns: 1.618fr 1fr;
             gap: 30px;
             align-items: center;
-            transition: border-color 0.4s ease;
-        }
-
-        .landscape-card:hover {
-            border-color: var(--accent);
         }
 
         .landscape-card::before {
@@ -288,7 +654,7 @@
             position: absolute;
             top: -10px;
             left: 20px;
-            background: #050505;
+            background: #020503;
             padding: 0 10px;
             font-size: 0.6rem;
             color: var(--accent);
@@ -316,17 +682,25 @@
             letter-spacing: 3px;
             text-transform: uppercase;
             color: rgba(255,255,255,0.4);
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             border-top: 1px solid var(--border);
             z-index: 100;
         }
 
-        @media (max-width: 768px) {
-            .video-container {
+        @media (max-width: 960px) {
+            .cinematic-intro {
                 grid-template-columns: 1fr;
+                padding: 35px;
             }
-            .landscape-card {
+            .intro-side-telemetry {
+                border-left: none;
+                border-top: 1px dashed rgba(255,255,255,0.12);
+                padding-left: 0;
+                padding-top: 30px;
+            }
+            .video-card, .landscape-card {
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
@@ -336,15 +710,44 @@
 <body>
 
     <div class="hero-bg"></div>
+    <canvas id="solarCanvas"></canvas>
 
     <nav>
-        <a href="landingPage.html" class="logo">MultiMedia</a>
+        <a href="landingPage.html" class="logo"></a>
         <a href="landingPage.html" class="back-link">// Return to Base</a>
     </nav>
 
     <section>
-        <h1 class="section-title">Solar System</h1>
-        <p class="subtitle">Deep Space Observation // Archives</p>
+        
+        <div class="cinematic-intro reveal-element active">
+            <div class="intro-main-flow">
+                <div class="sys-status-badge">
+                    <div class="status-dot"></div>
+                    <span class="status-text">System Status: Active</span>
+                </div>
+                <h1 class="cinematic-title">Solar System<br><span>Observation</span></h1>
+                <p class="cinematic-desc">An advanced telemetry viewport tracking spatial kinematics, relative computational orbital velocities, and multi-spectral cosmic signatures inside our system cluster environment.</p>
+            </div>
+            
+            <div class="intro-side-telemetry">
+                <div class="telemetry-block">
+                    <h4>Vector Tracking</h4>
+                    <div class="vector-hud-display">
+                        <div class="vector-circle">
+                            <div class="vector-circle-inner"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="telemetry-block">
+                    <h4>Core Telemetry</h4>
+                    <ul class="tech-specs-list">
+                        <li><span>Sector:</span> <span><strong>04-SOL</strong></span></li>
+                        <li><span>Objects:</span> <span><strong>08 Planets</strong></span></li>
+                        <li><span>Data Status:</span> <span><strong>Synchronized</strong></span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
         <div class="calculator-panel">
             <label for="earthAgeInput">Enter Target Earth Age</label>
@@ -352,14 +755,14 @@
         </div>
 
         <div class="video-container">
-            <div class="video-card">
+            <div class="video-card reveal-element">
+                <div class="planet-model-box">
+                    <span class="planet-index">00 / 08</span>
+                    <div class="planet-sphere" style="background: radial-gradient(circle at 30% 30%, #fff 20%, #ffdd66 50%, #ff5500 80%, #220000 100%); box-shadow: 0 0 50px rgba(0, 255, 102, 0.25), 0 0 20px rgba(255, 221, 102, 0.2);"></div>
+                    <div class="planet-tag">System Core</div>
+                </div>
                 <div class="iframe-wrapper">
-                    <iframe 
-                        src="https://www.youtube-nocookie.com/embed/wuqkDt6LTyU" 
-                        title="The Sun" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
+                    <iframe src="https://www.youtube-nocookie.com/embed/wuqkDt6LTyU" title="The Sun" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
                 <div class="video-info">
                     <h3>Sun</h3>    
@@ -369,137 +772,39 @@
                         <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val">N/A</span></div>
                         <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">0 EY</span></div>
                     </div>
+                    <a href="sources/sun.blend" download="sun.blend" class="download-btn">⇩ Download Data</a>
                 </div>
             </div>
 
-            <div class="video-card" data-period="29.45">
+            <div class="video-card reveal-element" data-period="0.0748">
+                <div class="planet-model-box">
+                    <span class="planet-index">01 / 08</span>
+                    <div class="planet-sphere"></div>
+                    <div class="planet-tag">Closest to Sun</div>
+                </div>
                 <div class="iframe-wrapper">
-                    <iframe 
-                        src="https://www.youtube-nocookie.com/embed/wCkkKWY6E2s" 
-                        title="Planetary Data" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
+                    <iframe src="https://www.youtube-nocookie.com/embed/DqJg44-qxYQ" title="Voyager Missions" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
                 <div class="video-info">
-                    <h3>Saturn</h3>
-                    <p>Saturn is a gas giant known for its beautiful rings. It is one of the largest planets in the solar system.</p>
-                    <div class="telemetry-metrics">
-                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
-                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
-                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">29.45 EY</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="video-card" data-period="0.0748">
-                <div class="iframe-wrapper">
-                    <iframe 
-                        src="https://www.youtube-nocookie.com/embed/DqJg44-qxYQ" 
-                        title="Voyager Missions" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="video-info">
-                    <h3>Moon</h3>
-                    <p>The Moon is Earth's only natural satellite. It affects ocean tides and lights up the night sky.</p>
+                    <h3>Mercury</h3>
+                    <p>Mercury is the smallest and closest planet to the Sun, known for its rocky surface and extreme temperature changes.</p>
                     <div class="telemetry-metrics">
                         <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
                         <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
                         <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">0.075 EY</span></div>
                     </div>
+                    <a href="sources/mercury.blend" download="mercury.blend" class="download-btn"> ⇩ Download Data</a>
                 </div>
             </div>
 
-            <div class="video-card" data-period="1.0">
+            <div class="video-card reveal-element" data-period="0.615">
+                <div class="planet-model-box">
+                    <span class="planet-index">02 / 08</span>
+                    <div class="planet-sphere"></div>
+                    <div class="planet-tag">Greenhouse</div>
+                </div>
                 <div class="iframe-wrapper">
-                    <iframe 
-                        src="https://www.youtube-nocookie.com/embed/kRJkBuDXPh4" 
-                        title="Orbital Mechanics" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="video-info">
-                    <h3>Earth</h3>
-                    <p>Earth is our home planet. It is the only known planet that supports life with water, air, and land.</p>
-                    <div class="telemetry-metrics">
-                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
-                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
-                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">1.00 EY</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="video-card" data-period="1.88">
-                <div class="iframe-wrapper">
-                    <iframe 
-                        src="https://www.youtube-nocookie.com/embed/B5Bkg0GYNFI" 
-                        title="Mars" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="video-info">
-                    <h3>Mars</h3>
-                    <p>Mars is a cold, desert world covered in iron oxide dust, giving it its iconic rusty-red appearance.</p>
-                    <div class="telemetry-metrics">
-                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
-                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
-                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">1.88 EY</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="video-card" data-period="164.8">
-                <div class="iframe-wrapper">
-                    <iframe 
-                        src="https://www.youtube-nocookie.com/embed/kE0dlWZU274" 
-                        title="Neptune" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="video-info">
-                    <h3>Neptune</h3>
-                    <p>Neptune is a dark, cold ice giant whipped by supersonic winds, orbiting at the remote edge of our planetary system.</p>
-                    <div class="telemetry-metrics">
-                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
-                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
-                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">164.80 EY</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="video-card" data-period="84.01">
-                <div class="iframe-wrapper">
-                    <iframe 
-                        src="https://www.youtube-nocookie.com/embed/M9d1kJp8C9g" 
-                        title="Uranus" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="video-info">
-                    <h3>Uranus</h3>
-                    <p>Uranus is an ice giant uniquely tilted completely on its side, rotating almost at a right angle to its orbit.</p>
-                    <div class="telemetry-metrics">
-                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
-                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
-                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">84.01 EY</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="video-card" data-period="0.615">
-                <div class="iframe-wrapper">
-                    <iframe 
-                        src="https://www.youtube-nocookie.com/embed/b42L7sK8BKU" 
-                        title="Venus" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
+                    <iframe src="https://www.youtube-nocookie.com/embed/b42L7sK8BKU" title="Venus" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
                 <div class="video-info">
                     <h3>Venus</h3>
@@ -509,17 +814,140 @@
                         <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
                         <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">0.615 EY</span></div>
                     </div>
+                    <a href="sources/venus.blend" download="venus.blend" class="download-btn">⇩ Download Data</a>                </div>
+            </div>
+
+            <div class="video-card reveal-element" data-period="1.0">
+                <div class="planet-model-box">
+                    <span class="planet-index">03 / 08</span>
+                    <div class="planet-sphere"></div>
+                    <div class="planet-tag">Habitable</div>
+                </div>
+                <div class="iframe-wrapper">
+                    <iframe src="https://www.youtube-nocookie.com/embed/kRJkBuDXPh4" title="Orbital Mechanics" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>Earth</h3>
+                    <p>Earth is our home planet. It is the only known planet that supports life with water, air, and land.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">1.00 EY</span></div>
+                    </div>
+                <a href="sources/earth.blend" download="earth.blend" class="download-btn">⇩ Download Data</a>
                 </div>
             </div>
 
-            <div class="video-card" data-period="248.0">
+            <div class="video-card reveal-element" data-period="1.88">
+                <div class="planet-model-box">
+                    <span class="planet-index">04 / 08</span>
+                    <div class="planet-sphere"></div>
+                    <div class="planet-tag">Red Planet</div>
+                </div>
                 <div class="iframe-wrapper">
-                    <iframe 
-                        src="https://www.youtube-nocookie.com/embed/6g18cw6r5Qo" 
-                        title="Pluto" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
+                    <iframe src="https://www.youtube-nocookie.com/embed/B5Bkg0GYNFI" title="Mars" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>Mars</h3>
+                    <p>Mars is a cold, desert world covered in iron oxide dust, giving it its iconic rusty-red appearance.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">1.88 EY</span></div>
+                    </div>
+                    <a href="sources/mars.blend" download="mars.blend" class="download-btn">⇩ Download Data</a>
+                </div>
+            </div>
+
+            <div class="video-card reveal-element" data-period="11.86">
+                <div class="planet-model-box">
+                    <span class="planet-index">05 / 08</span>
+                    <div class="planet-sphere"></div>
+                    <div class="planet-tag">Gas Giant</div>
+                </div>
+                <div class="iframe-wrapper">
+                    <iframe src="https://www.youtube-nocookie.com/embed/wCkkKWY6E2s" title="Planetary Data" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>Jupiter</h3>
+                    <p>Jupiter is the largest planet in our Solar System. It is a massive gas giant covered in swirling cloud bands and monumental storms.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">11.86 EY</span></div>
+                    </div>
+                <a href="sources/jupiter.blend" download="jupiter.blend" class="download-btn">⇩ Download Data</a>
+                </div>
+            </div>
+
+            <div class="video-card reveal-element" data-period="29.45">
+                <div class="planet-model-box">
+                    <span class="planet-index">06 / 08</span>
+                    <div class="planet-sphere"></div>
+                    <div class="planet-tag">Ringed World</div>
+                </div>
+                <div class="iframe-wrapper">
+                    <iframe src="https://www.youtube-nocookie.com/embed/wCkkKWY6E2s" title="Planetary Data" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>Saturn</h3>
+                    <p>Saturn is a gas giant known for its beautiful rings. It is one of the largest planets in the solar system.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">29.45 EY</span></div>
+                    </div>
+                    <a href="sources/saturn.blend" download="saturn.blend" class="download-btn">⇩ Download Data</a>                </div>
+            </div>
+
+            <div class="video-card reveal-element" data-period="84.01">
+                <div class="planet-model-box">
+                    <span class="planet-index">07 / 08</span>
+                    <div class="planet-sphere"></div>
+                    <div class="planet-tag">Tilted Axis</div>
+                </div>
+                <div class="iframe-wrapper">
+                    <iframe src="https://www.youtube-nocookie.com/embed/M9d1kJp8C9g" title="Uranus" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>Uranus</h3>
+                    <p>Uranus is an ice giant uniquely tilted completely on its side, rotating almost at a right angle to its orbit.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">84.01 EY</span></div>
+                    </div>
+                <a href="sources/uranus.blend" download="uranus.blend" class="download-btn">⇩ Download Data</a>                </div>
+            </div>
+
+            <div class="video-card reveal-element" data-period="164.8">
+                <div class="planet-model-box">
+                    <span class="planet-index">08 / 08</span>
+                    <div class="planet-sphere"></div>
+                    <div class="planet-tag">Outermost</div>
+                </div>
+                <div class="iframe-wrapper">
+                    <iframe src="https://www.youtube-nocookie.com/embed/kE0dlWZU274" title="Neptune" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3>Neptune</h3>
+                    <p>Neptune is a dark, cold ice giant whipped by supersonic winds, orbiting at the remote edge of our planetary system.</p>
+                    <div class="telemetry-metrics">
+                        <div class="metric-line"><span class="metric-label">Local Age:</span> <span class="metric-val class-age">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
+                        <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">164.80 EY</span></div>
+                    </div>
+                <a href="sources/neptune.blend" download="neptune.blend" class="download-btn">⇩ Download Data</a>                </div>
+            </div>
+
+            <div class="video-card reveal-element" data-period="248.0">
+                <div class="planet-model-box">
+                    <span class="planet-index">EX / 08</span>
+                    <div class="planet-sphere"></div>
+                    <div class="planet-tag">Dwarf Planet</div>
+                </div>
+                <div class="iframe-wrapper">
+                    <iframe src="https://www.youtube-nocookie.com/embed/6g18cw6r5Qo" title="Pluto" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
                 <div class="video-info">
                     <h3>Pluto</h3>
@@ -529,19 +957,15 @@
                         <div class="metric-line"><span class="metric-label">Revolutions:</span> <span class="metric-val class-rev">0.00</span></div>
                         <div class="metric-line"><span class="metric-label">Orbital Period:</span> <span class="metric-val highlight">248.00 EY</span></div>
                     </div>
-                </div>
+                <a href="sources/pluto.blend" download="pluto.blend" class="download-btn">⇩ Download Data</a>                
+              </div>
             </div>
         </div>
 
-        <div class="landscape-video-container">
+        <div class="landscape-video-container reveal-element">
             <div class="landscape-card">
                 <div class="landscape-wrapper">
-                    <iframe 
-                        src="https://www.youtube-nocookie.com/embed/9yHd9_GKw2E" 
-                        title="Solar System Overview" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
+                    <iframe src="https://www.youtube-nocookie.com/embed/9yHd9_GKw2E" title="Solar System Overview" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
                 <div class="video-info">
                     <h3>Cosmic Summary</h3>
@@ -550,6 +974,7 @@
                         <div class="metric-line"><span class="metric-label">Feed Status:</span> <span class="metric-val highlight">LIVE</span></div>
                         <div class="metric-line"><span class="metric-label">System Integrity:</span> <span class="metric-val">100%</span></div>
                     </div>
+                <a href="sources/gallardo_solarsystem.blend" download="pluto.blend" class="download-btn">⇩ Download Data</a>                
                 </div>
             </div>
         </div>
@@ -557,29 +982,25 @@
 
     <div class="bottom-bar">
         <span><strong>STATUS:</strong> SCANNING_ORBITS</span>
-        <span><strong>CODE:</strong> SPACE_DEPT_09</span>
+        <span><strong>CODE:</strong> SPACE_DEPT_08</span>
     </div>
 
     <script>
+        // --- Core Telemetry Age Calculation Logic ---
         const ageInput = document.getElementById('earthAgeInput');
         const cards = document.querySelectorAll('.video-card[data-period]');
 
         function calculateTelemetry() {
             let earthYears = parseFloat(ageInput.value);
-            
-            // Validation handling for empty or negative inputs
             if (isNaN(earthYears) || earthYears < 0) {
                 earthYears = 0;
             }
 
             cards.forEach(card => {
                 const orbitalPeriod = parseFloat(card.getAttribute('data-period'));
-                
-                // Calculate dynamic metrics
                 const targetAge = earthYears / orbitalPeriod;
                 const totalRevolutions = earthYears / orbitalPeriod;
 
-                // Update DOM text nodes dynamically with precise formatting
                 const ageElement = card.querySelector('.class-age');
                 const revElement = card.querySelector('.class-rev');
 
@@ -588,11 +1009,115 @@
             });
         }
 
-        // Event listeners handling setup for real-time calculation execution
         ageInput.addEventListener('input', calculateTelemetry);
-        
-        // Initial engine trigger on window paint completion
         window.addEventListener('DOMContentLoaded', calculateTelemetry);
+
+        // --- Content Section Intersection Observer ---
+        const revealElements = document.querySelectorAll('.reveal-element');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, {
+            threshold: 0.15, 
+            rootMargin: "0px 0px -50px 0px"
+        });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // --- Background Rotating Canvas Simulation ---
+        const canvas = document.getElementById('solarCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const planets = [
+            { name: "Mercury", period: 0.0748, radius: 4,  color: "#a1958e" },
+            { name: "Venus",   period: 0.615,  radius: 6.5,color: "#e0a353" },
+            { name: "Earth",   period: 1.0,    radius: 7,  color: "#388fe6" },
+            { name: "Mars",    period: 1.88,   radius: 5,  color: "#bd3a3c" },
+            { name: "Jupiter", period: 11.86,  radius: 15, color: "#9c6f50" },
+            { name: "Saturn",  period: 29.45,  radius: 12, color: "#c2a674", hasRings: true },
+            { name: "Uranus",  period: 84.01,  radius: 9,  color: "#69d2ff" },
+            { name: "Neptune", period: 164.8,  radius: 8.5,color: "#2b46c7" },
+            { name: "Pluto",   period: 248.0,  radius: 3.5,color: "#8c715c" }
+        ];
+
+        let angles = planets.map(() => Math.random() * Math.PI * 2);
+
+        function drawSolarSystem() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const centerX = canvas.width * 0.5;
+            const centerY = canvas.height * 0.5;
+
+            const maxDimension = Math.min(canvas.width, canvas.height);
+            const orbitSpacing = (maxDimension * 0.44) / planets.length; 
+
+            ctx.shadowBlur = 30;
+            ctx.shadowColor = "rgba(0, 255, 102, 0.6)";
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 20, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(0, 255, 102, 0.2)"; 
+            ctx.fill();
+            ctx.strokeStyle = "rgba(0, 255, 102, 0.95)";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            planets.forEach((planet, index) => {
+                const orbitRadius = 45 + (index * orbitSpacing);
+                
+                ctx.shadowBlur = 0;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, orbitRadius, 0, Math.PI * 2);
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.08)"; 
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                const planetX = centerX + Math.cos(angles[index]) * orbitRadius;
+                const planetY = centerY + Math.sin(angles[index]) * orbitRadius;
+
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = planet.color;
+
+                ctx.beginPath();
+                ctx.arc(planetX, planetY, planet.radius, 0, Math.PI * 2);
+                ctx.fillStyle = planet.color;
+                ctx.fill();
+
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = "rgba(0, 255, 102, 0.4)";
+                ctx.beginPath();
+                ctx.arc(planetX, planetY, planet.radius + 4, 0, Math.PI * 2);
+                ctx.strokeStyle = "rgba(0, 255, 102, 0.35)";
+                ctx.lineWidth = 0.75;
+                ctx.stroke();
+
+                if (planet.hasRings) {
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = planet.color;
+                    ctx.beginPath();
+                    ctx.ellipse(planetX, planetY, planet.radius + 8, planet.radius / 2, -Math.PI / 6, 0, Math.PI * 2);
+                    ctx.strokeStyle = "rgba(194, 166, 116, 0.7)";
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+
+                const baseSpeed = 0.005; 
+                angles[index] += baseSpeed * (1 / Math.sqrt(planet.period));
+            });
+
+            requestAnimationFrame(drawSolarSystem);
+        }
+
+        drawSolarSystem();
     </script>
 </body>
 </html>
