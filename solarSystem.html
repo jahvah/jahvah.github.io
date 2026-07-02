@@ -5,707 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Celestial Mapping | Solar System</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --accent: #00FF66;
-            --accent-cyan: #00F0FF;
-            --accent-dim: rgba(0, 255, 102, 0.25);
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #020503;
-            color: #fff;
-            overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* --- Dynamic Cosmic Background Layer --- */
-        .hero-bg {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at 50% 50%, #04120a 0%, #010402 90%);
-            z-index: -2;
-            overflow: hidden;
-        }
-
-        .hero-bg::before,
-        .hero-bg::after {
-            content: "";
-            position: absolute;
-            inset: -100px;
-            background-repeat: repeat;
-            opacity: 0.4;
-            mix-blend-mode: screen;
-        }
-
-        .hero-bg::before {
-            background-image: 
-                radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
-                radial-gradient(1.5px 1.5px at 40px 70px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 80px 120px, rgba(0, 255, 102, 0.5), rgba(0,0,0,0));
-            background-size: 250px 250px;
-            animation: cosmicDrift 120s linear infinite;
-        }
-
-        /* --- Vector Solar System Canvas Overlay --- */
-        #solarCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.85;
-        }
-
-        @keyframes cosmicDrift {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(40px, 40px) rotate(360deg); }
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 8%;
-            background: rgba(2, 5, 3, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-family: 'Syncopate', sans-serif;
-            font-weight: 700;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 2px;
-        }
-
-        .logo::before {
-            content: "MULTIMEDIA // AUTORING";
-            background: linear-gradient(to right, #ffffff, var(--accent) 70%, var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: authBlink 2s steps(2, start) infinite;
-        }
-
-        .logo::after {
-            content: "Elijah Neil S. Gallardo";
-            font-family: 'Inter', sans-serif;
-            font-weight: 400;
-            font-size: 0.55rem;
-            letter-spacing: 2px;
-            color: var(--accent-cyan);
-            opacity: 0.6;
-        }
-
-        @keyframes authBlink {
-            0%, 100% { border-right: 2px solid transparent; }
-            50% { border-right: 2px solid var(--accent); }
-        }
-
-        a.logo {
-            text-decoration: none;
-            outline: none;
-            border: none;
-            color: inherit;
-        }
-
-        a.logo:link, a.logo:visited, a.logo:hover, a.logo:active, a.logo:focus {
-            text-decoration: none;
-            outline: none;
-        }
-
-        .back-link {
-            text-decoration: none;
-            color: var(--accent);
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
-        .back-link:hover {
-            letter-spacing: 4px;
-            text-shadow: 0 0 10px var(--accent);
-        }
-
-        section {
-            padding: 140px 8% 120px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .cinematic-intro {
-            width: 100%;
-            max-width: 1200px;
-            margin-bottom: 4rem;
-            position: relative;
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 40px;
-            background: linear-gradient(135deg, rgba(2,5,3,0.85) 0%, rgba(0,255,102,0.05) 100%);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 50px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            overflow: hidden;
-        }
-
-        .cinematic-intro::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(rgba(0, 255, 102, 0.03) 1px, transparent 1px);
-            background-size: 100% 4px;
-            pointer-events: none;
-            opacity: 0.7;
-        }
-
-        .intro-main-flow {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .sys-status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(0, 255, 102, 0.08);
-            border: 1px solid var(--accent-dim);
-            padding: 6px 14px;
-            border-radius: 3px;
-            width: fit-content;
-            margin-bottom: 1.8rem;
-        }
-
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            background-color: var(--accent);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--accent);
-            animation: pulseGlow 2s infinite;
-        }
-
-        .status-text {
-            font-size: 0.65rem;
-            font-family: 'Syncopate', sans-serif;
-            letter-spacing: 3px;
-            color: var(--accent);
-            text-transform: uppercase;
-        }
-
-        .cinematic-title {
-            font-family: 'Syncopate', sans-serif;
-            font-size: clamp(2.2rem, 5vw, 4.2rem);
-            font-weight: 700;
-            line-height: 1.05;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-            margin-bottom: 1.8rem;
-            background: linear-gradient(to bottom, #ffffff 60%, rgba(255,255,255,0.4) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .cinematic-title span {
-            color: var(--accent);
-            -webkit-text-fill-color: initial;
-            text-shadow: 0 0 20px rgba(0, 255, 102, 0.3);
-        }
-
-        .cinematic-desc {
-            color: rgba(255, 255, 255, 0.75);
-            font-size: 1.05rem;
-            line-height: 1.7;
-            max-width: 720px;
-            font-weight: 300;
-            border-left: 2px solid var(--accent-dim);
-            padding-left: 20px;
-        }
-
-        .intro-side-telemetry {
-            border-left: 1px dashed rgba(255,255,255,0.12);
-            padding-left: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            z-index: 2;
-        }
-
-        .telemetry-block h4 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.4);
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        .vector-hud-display {
-            width: 100%;
-            height: 100px;
-            border: 1px dashed rgba(255,255,255,0.1);
-            position: relative;
-            margin-bottom: 20px;
-            background: rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .vector-hud-display::before {
-            content: "";
-            position: absolute;
-            width: 70%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            animation: scanHorizontal 3s ease-in-out infinite;
-        }
-
-        .vector-circle {
-            width: 60px;
-            height: 60px;
-            border: 1px solid var(--accent-dim);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .vector-circle-inner {
-            width: 30px;
-            height: 30px;
-            border: 1px dashed var(--accent);
-            border-radius: 50%;
-            animation: rotateClockwise 12s linear infinite;
-        }
-
-        .tech-specs-list {
-            list-style: none;
-            font-size: 0.72rem;
-            font-family: monospace;
-            color: rgba(255,255,255,0.5);
-        }
-
-        .tech-specs-list li {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .tech-specs-list span strong {
-            color: #fff;
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { transform: scale(1); opacity: 0.6; }
-            50% { transform: scale(1.3); opacity: 1; }
-        }
-
-        @keyframes scanHorizontal {
-            0% { top: 10%; }
-            50% { top: 90%; }
-            100% { top: 10%; }
-        }
-
-        @keyframes rotateClockwise {
-            to { transform: rotate(360deg); }
-        }
-
-        .calculator-panel {
-            background: rgba(4, 8, 5, 0.85);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 20px 40px;
-            border-radius: 4px;
-            margin-bottom: 4rem;
-            text-align: center;
-            width: 100%;
-            max-width: 500px;
-            position: relative;
-        }
-
-        .calculator-panel::before {
-            content: "AutoCalculator_Engine";
-            position: absolute;
-            top: -10px;
-            left: 20px;
-            background: #020503;
-            padding: 0 10px;
-            font-size: 0.6rem;
-            color: var(--accent);
-            letter-spacing: 2px;
-        }
-
-        .calculator-panel label {
-            display: block;
-            font-family: 'Syncopate', sans-serif;
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            margin-bottom: 12px;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .calculator-panel input {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border);
-            color: #fff;
-            padding: 10px 15px;
-            font-family: 'Inter', sans-serif;
-            font-size: 1.1rem;
-            text-align: center;
-            width: 100%;
-            max-width: 200px;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        .calculator-panel input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.2);
-        }
-
-        .reveal-element {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: transform, opacity;
-        }
-
-        .reveal-element.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .video-container {
-            display: flex;
-            flex-direction: column;
-            gap: 60px;
-            width: 100%;
-            max-width: 1100px;
-            margin-bottom: 80px;
-        }
-
-        .video-card {
-            background: rgba(4, 8, 5, 0.75);
-            border: 1px solid var(--border);
-            padding: 30px; 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            position: relative;
-            transition: transform 0.4s ease, border-color 0.4s ease;
-            max-width: 100%; 
-            display: grid;
-            grid-template-columns: 240px 1.2fr 1fr;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .video-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-        }
-
-        .video-card::before {
-            content: "DATA_STREAM";
-            position: absolute;
-            top: -10px;
-            left: 20px;
-            background: #020503;
-            padding: 0 10px;
-            font-size: 0.6rem;
-            color: var(--accent);
-            letter-spacing: 2px;
-        }
-
-        .planet-model-box {
-            position: relative;
-            width: 100%;
-            height: 240px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .planet-index {
-            position: absolute;
-            top: 15px;
-            left: 20px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.4);
-            letter-spacing: 2px;
-        }
-
-        .planet-sphere {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #e3d5ca 0%, #7f5539 70%, #000000 100%);
-            box-shadow: inset -10px -10px 30px rgba(0,0,0,0.9), 0 0 40px rgba(227, 213, 202, 0.15);
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .video-card[data-period="0.0748"] .planet-sphere {
-            background: radial-gradient(circle at 30% 30%, #d8cbc4 0%, #8a7e78 60%, #1a1513 100%);
-            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 35px rgba(255,255,255,0.1);
-        }
-        .video-card[data-period="0.615"] .planet-sphere {
-            background: radial-gradient(circle at 30% 30%, #fff2b2 0%, #ce9143 60%, #201000 100%);
-            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 40px rgba(206,145,67,0.2);
-        }
-        .video-card[data-period="1.0"] .planet-sphere {
-            background: radial-gradient(circle at 30% 30%, #64dfdf 0%, #226fbe 60%, #031424 100%);
-            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 40px rgba(100,223,223,0.2);
-        }
-        .video-card[data-period="1.88"] .planet-sphere {
-            background: radial-gradient(circle at 30% 30%, #ffaa44 0%, #9e2a2b 70%, #1a000c 100%);
-            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 45px rgba(255,170,68,0.15);
-        }
-        .video-card[data-period="11.86"] .planet-sphere {
-            background: radial-gradient(circle at 30% 30%, #e3d5ca 0%, #7f5539 70%, #000000 100%);
-            box-shadow: inset -10px -10px 30px rgba(0,0,0,0.9), 0 0 40px rgba(227, 213, 202, 0.15);
-        }
-        .video-card[data-period="29.45"] .planet-sphere {
-            background: radial-gradient(circle at 30% 30%, #ebd49a 0%, #a68a56 60%, #1c150c 100%);
-            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 40px rgba(235,212,154,0.15);
-        }
-        .video-card[data-period="29.45"] .planet-sphere::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 180px;
-            height: 14px;
-            background: rgba(235, 212, 154, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) rotate(-15deg);
-        }
-        .video-card[data-period="84.01"] .planet-sphere {
-            background: radial-gradient(circle at 30% 30%, #b3e5fc 0%, #4fc3f7 60%, #01579b 100%);
-            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 35px rgba(79,195,247,0.2);
-        }
-        .video-card[data-period="164.8"] .planet-sphere {
-            background: radial-gradient(circle at 30% 30%, #4d7cff 0%, #1a3099 70%, #050a30 100%);
-            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9), 0 0 35px rgba(77,124,255,0.2);
-        }
-
-        .planet-tag {
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 4px 10px;
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .iframe-wrapper {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16 / 9; 
-            overflow: hidden;
-            background: #000;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        .video-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-        }
-
-        .video-info h3 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 1.3rem;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-        }
-
-        .video-info p {
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.7);
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        /* --- Cybernetic Download Button Styling --- */
-        .download-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 8px 14px;
-            font-family: 'Syncopate', sans-serif;
-            font-size: 0.6rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 15px;
-            width: fit-content;
-            text-decoration: none;
-        }
-
-        .download-btn:hover {
-            background: var(--accent);
-            color: #020503;
-            box-shadow: 0 0 15px var(--accent-dim);
-        }
-
-        .telemetry-metrics {
-            border-top: 1px dashed rgba(255,255,255,0.15);
-            padding-top: 12px;
-            font-size: 0.72rem;
-        }
-
-        .metric-line {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
-        }
-
-        .metric-label {
-            color: rgba(255,255,255,0.4);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .metric-val {
-            color: #fff;
-            font-weight: 700;
-        }
-
-        .metric-val.highlight {
-            color: var(--accent);
-        }
-
-        .landscape-video-container {
-            width: 100%;
-            max-width: 1100px;
-            margin-top: 20px;
-        }
-
-        .landscape-card {
-            background: rgba(4, 8, 5, 0.75);
-            border: 1px solid var(--border);
-            padding: 30px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            position: relative;
-            display: grid;
-            grid-template-columns: 1.618fr 1fr;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .landscape-card::before {
-            content: "FINAL_OUTPUT_FEED";
-            position: absolute;
-            top: -10px;
-            left: 20px;
-            background: #020503;
-            padding: 0 10px;
-            font-size: 0.6rem;
-            color: var(--accent);
-            letter-spacing: 2px;
-        }
-
-        .landscape-wrapper {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            background: #000;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .bottom-bar {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            gap: 60px;
-            padding: 15px;
-            font-size: 0.65rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.4);
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border-top: 1px solid var(--border);
-            z-index: 100;
-        }
-
-        @media (max-width: 960px) {
-            .cinematic-intro {
-                grid-template-columns: 1fr;
-                padding: 35px;
-            }
-            .intro-side-telemetry {
-                border-left: none;
-                border-top: 1px dashed rgba(255,255,255,0.12);
-                padding-left: 0;
-                padding-top: 30px;
-            }
-            .video-card, .landscape-card {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/css/solarSystem.css">
+    
 </head>
 <body>
 
@@ -979,6 +280,108 @@
             </div>
         </div>
     </section>
+
+    <div class="cinematic-intro reveal-element active" style="margin-top: 60px; grid-template-columns: 1fr;">
+    <div class="intro-main-flow">
+
+        <div class="sys-status-badge" style="background: rgba(245,121,0,0.1); border: 1px solid rgba(245,121,0,0.3);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 4C14.05 4 15.93 4.77 17.38 6.03L13.88 9.53C13.31 9.2 12.68 9 12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 11.32 14.8 10.69 14.47 10.12L17.97 6.62C19.23 8.07 20 9.95 20 12C20 16.42 16.42 20 12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4Z" fill="#F57900"/>
+                <circle cx="12" cy="12" r="1.5" fill="#F57900"/>
+            </svg>
+
+            <span class="status-text" style="color:#F57900;">
+                Pipeline Engine: Blender Active
+            </span>
+        </div>
+
+        <h2 class="cinematic-title" style="font-size:2rem; margin-bottom:1rem;">
+            Asset Render <span>Instructions</span>
+        </h2>
+
+        <p class="cinematic-desc" style="margin-bottom:2rem;">
+            Follow these localized system steps to load, compile, and execute viewport renders for downloaded
+            <code>.blend</code> planetary models.
+        </p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; width:100%;">
+
+            <!-- Step 1 -->
+            <div class="telemetry-block" style="background:rgba(0,0,0,0.3); padding:20px; border:1px solid var(--border); border-radius:4px;">
+                <h4 style="color:var(--accent-cyan);">
+                    01 / Environment Setup
+                </h4>
+
+                <ul class="tech-specs-list" style="margin-top:10px;">
+                    <li style="margin-bottom:12px;">
+                        <span>Download File:</span>
+                        <span>Get raw assets using the <strong>⇩ Download Data</strong> button.</span>
+                    </li>
+
+                    <li style="margin-bottom:12px;">
+                        <span>Launch Blender:</span>
+                        <span>Open <strong>Blender 4.0+</strong>.</span>
+                    </li>
+
+                    <li style="margin-bottom:12px;">
+                        <span>Open Project:</span>
+                        <span>Select <strong>File → Open</strong> and choose the downloaded <code>.blend</code> file.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="telemetry-block" style="background:rgba(0,0,0,0.3); padding:20px; border:1px solid var(--border); border-radius:4px;">
+                <h4 style="color:var(--accent);">
+                    02 / Viewport &amp; Materials
+                </h4>
+
+                <ul class="tech-specs-list" style="margin-top:10px;">
+                    <li style="margin-bottom:12px;">
+                        <span>Rendered View:</span>
+                        <span>Press <code>Z</code> then select <strong>Rendered</strong>.</span>
+                    </li>
+
+                    <li style="margin-bottom:12px;">
+                        <span>Render Engine:</span>
+                        <span>Verify <strong>Cycles</strong> or <strong>Eevee</strong> is selected in Render Properties.</span>
+                    </li>
+
+                    <li style="margin-bottom:12px;">
+                        <span>Camera View:</span>
+                        <span>Press <code>Numpad 0</code> to preview through the camera.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="telemetry-block" style="background:rgba(0,0,0,0.3); padding:20px; border:1px solid var(--border); border-radius:4px;">
+                <h4 style="color:#F57900;">
+                    03 / Render &amp; Export
+                </h4>
+
+                <ul class="tech-specs-list" style="margin-top:10px;">
+                    <li style="margin-bottom:12px;">
+                        <span>Render Image:</span>
+                        <span>Press <code>F12</code> to render a single image.</span>
+                    </li>
+
+                    <li style="margin-bottom:12px;">
+                        <span>Render Animation:</span>
+                        <span>Press <code>Ctrl + F12</code> to render the animation.</span>
+                    </li>
+
+                    <li style="margin-bottom:12px;">
+                        <span>Save Output:</span>
+                        <span>Select <strong>Image → Save As</strong> to export the final render.</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+</div>
 
     <div class="bottom-bar">
         <span><strong>STATUS:</strong> SCANNING_ORBITS</span>
