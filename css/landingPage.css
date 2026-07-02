@@ -201,7 +201,7 @@
 
 /* Primary Brand Identity Call */
 .logo::before {
-    content: "MULTIMEDIA // AUTORING";
+    content: "MULTIMEDIA // AUTHORING";
     background: linear-gradient(to right, #ffffff, var(--accent) 70%, var(--accent-cyan));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
